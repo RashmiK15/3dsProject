@@ -1,0 +1,133 @@
+<html>
+<head>
+<script>
+
+var request;
+
+
+	function sendInfo()
+	{
+		var a=document.myform.name.value;
+		console.log('a '+a);
+		
+		var b=document.myform.dob.value;
+		console.log('b '+b);
+		
+		var c=document.myform.address.value;
+		console.log('c '+c);
+		
+		var d=document.myform.rcNumber.value;
+		console.log('d '+d);
+		
+		var e=document.myform.policyId.value;
+		console.log('e '+e);
+		
+		var f=document.myform.dl.value;
+		console.log('f '+f);
+		
+		var dataToSend = {
+		        "customerName": "ABC",
+		        "date": 1999-05-05,
+		        "address": "Bangalore",
+		        "rcNumber": "967",
+		        "policyId": "105",
+		        "drivingLicence": "9692"
+		 }
+		
+		
+		console.log('>>before data : '+JSON.stringify(dataToSend));
+		
+		dataToSend.customerName=a;
+		dataToSend.date=b;
+		dataToSend.address=c;
+		dataToSend.rcNumber=d;
+		dataToSend.policyId=e,
+		dataToSend.drivingLicence=f;
+		
+		console.log('>>after data : '+JSON.stringify(dataToSend));
+				
+		var url='http://localhost:8080/GeneralInsurance/ins/customer/add/';
+			
+		console.log('sendInfo: url : '+url);
+		if(window.XMLHttpRequest) { //non-microsoft
+			request=new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject) { //Edge/IE
+			request=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		try
+		{
+			request.onreadystatechange=getInfo;
+			request.open("POST",url,true);
+			request.setRequestHeader("Content-Type","application/json");
+			request.send(JSON.stringify(dataToSend));
+			
+		}
+		catch(e)
+		{
+			alert("Unable to connect to server"+e);
+		}
+		
+		
+	}
+
+
+	function getInfo()
+	{
+		if(request.readyState==0) {
+			console.log('request not initialized');
+		}
+		else {
+			console.log('request initialized');
+
+		}
+	
+		if(request.readyState==1) {
+			console.log('connected to the server');
+		}
+		else {
+			console.log('request initialized');
+
+		}
+	
+		//0 REQUEST TILL NOT INTIALIZED
+		//1 CONNECTED TO THE SERVER
+		//2 REQUEST IS RECIEVED BY TEH SERVER
+		//3 REQUEST IS PROCESSING
+		//4 REQUEST IS DONE AND RESPONSE IS READY
+		if(request.readyState==4) {//HAS 
+			console.log('status '+request.status);
+			var val=request.responseText;
+			document.getElementById('dataHere').innerHTML=val;
+		}
+	}
+
+</script>
+</head>
+
+
+<body>
+    <h1>Get your vehicle insured with Motor Insurance Services</h1>
+
+<form name="myform"> 
+
+
+	<h2>Enter your details</h2>
+	
+	<input type = "text" name="name" placeholder="Full Name"><br><br>
+	<input type = "date" name="dob" placeholder="Date of Birth"><br><br>
+	<input type = "text" name="address" placeholder="Address"><br><br>
+	<input type = "text" name="rcNumber" placeholder="Car Registration Number"><br><br>
+	<input type = "number" name="policyId" placeholder="Policy Number"><br><br>
+	<input type = "text" name="dl" placeholder="Driving Licence Number"><br><br>
+	
+	<input type= "button" value="Submit" onclick="sendInfo()">
+	
+</form>
+
+Status <span id="dataHere"> </span>
+
+
+</body>
+</html>

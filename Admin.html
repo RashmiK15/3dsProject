@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Admin</title>
+        <link rel="stylesheet" href="AdminCss.css">
+    </head>
+     <script>
+    
+ // Defining async function
+ async function getapi(url) {
+     
+     // Storing response
+     const response = await fetch(url);
+     
+     // Storing data in form of JSON
+     var data = await response.json();
+     console.log(data);
+     show(data);
+     
+ }
+ async function getapi1(url) {
+     
+     // Storing response
+     const response = await fetch(url);
+     
+     // Storing data in form of JSON
+     var data = await response.json();
+     console.log(data);
+     show1(data);
+     
+ }  
+ async function getapi2(url) {
+     
+     // Storing response
+     const response = await fetch(url);
+     
+     // Storing data in form of JSON
+     var data = await response.json();
+     console.log(data);
+     show2(data);
+     
+ }
+ 
+ 
+ 
+ // Calling that async function
+ getapi("http://localhost:8080/GeneralInsuranceProject/rest/claim/getClaims");
+ getapi1("http://localhost:8080/GeneralInsuranceProject/rest/claim/getFirs");
+ getapi2("http://localhost:8080/GeneralInsuranceProject/rest/claim/getBills");
+ function fun() {
+	 location.reload();
+	 } 
+function myFunction(tokenId){
+	url="http://localhost:8080/GeneralInsuranceProject/rest/claim/update/Accepted/"+tokenId;
+	
+	console.log('sendInfo: url : '+url);
+	if(window.XMLHttpRequest) { //non-microsoft
+		request=new XMLHttpRequest();
+	}
+	else if(window.ActiveXObject) { //Edge/IE
+		request=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	try
+	{
+		request.onreadystatechange=getInfo;
+		request.open("PUT",url,true);
+		request.send();
+		
+	}
+	catch(e)
+	{
+		
+		alert("Unable to connect to server"+e);
+		
+	}
+}
+function myFunction1(tokenId){
+	url="http://localhost:8080/GeneralInsuranceProject/rest/claim/update/Rejected/"+tokenId;
+	
+	console.log('sendInfo: url : '+url);
+	if(window.XMLHttpRequest) { //non-microsoft
+		request=new XMLHttpRequest();
+	}
+	else if(window.ActiveXObject) { //Edge/IE
+		request=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	try
+	{
+		request.onreadystatechange=getInfo;
+		request.open("PUT",url,true);
+		request.send();
+		
+		
+	}
+	catch(e)
+	{
+		
+		alert("Unable to connect to server"+e);
+		
+	}
+}
+
+function getInfo()
+{
+	if(request.readyState==0) {
+		console.log('request not initialized');
+	}
+	else {
+		console.log('request initialized');
+
+	}
+
+	if(request.readyState==1) {
+		console.log('connected to the server');
+	}
+	else {
+		console.log('request initialized');
+
+	}
+
+	//0 REQUEST TILL NOT INTIALIZED
+	//1 CONNECTED TO THE SERVER
+	//2 REQUEST IS RECIEVED BY TEH SERVER
+	//3 REQUEST IS PROCESSING
+	//4 REQUEST IS DONE AND RESPONSE IS READY
+	if(request.readyState==4) {//HAS 
+		console.log('status '+request.status);
+		var val=request.responseText;
+		fun();
+	}
+	
+}
+ function show(data) {
+	 
+	 
+     let tab = 
+         `<tr>
+           <th>Token Id</th>
+           <th>Policy Id</th>
+           <th>Fir Id</th>
+           <th>Bill Id</th>
+           <th>Cause</th>
+           <th>Status</th>
+           <th>Customer Id</th>
+           <th>Amount Claimed</th>
+           <th colspan="2">Action</th>
+           
+          </tr>`;
+     
+     // Loop to access all rows 
+     for (let r of data) {
+         tab += `<tr> 
+     <td>${r.tokenId} </td>
+     <td>${r.policyId}</td>
+     <td>${r.fid}</td> 
+     <td>${r.billId}</td>   
+     <td>${r.cause}</td>
+     <td>${r.status_}</td>
+     <td>${r.customerId}</td>
+     <td>${r.amountClaimed}</td> 
+     
+     <td><button class="button"onclick="myFunction(${r.tokenId})">Accept</button></td>
+     <td><button class="button"onclick="myFunction1(${r.tokenId})">Reject</button></td>
+ </tr>`;
+     document.getElementById("ClaimRequest").innerHTML = tab;
+     }
+ }
+function show1(data) {
+	 
+	
+     let tab = 
+         `<tr>
+           <th>Fir Id</th>
+           <th>Case Description</th>
+           <th>Filled Date</th>
+         
+          </tr>`;
+     
+     // Loop to access all rows 
+     for (let r of data) {
+         tab += `<tr> 
+     <td>${r.firId} </td>
+     <td>${r.caseDescription}</td>
+     <td>${r.filedDate}</td> 
+     
+     
+ </tr>`;
+     document.getElementById("Firs").innerHTML = tab;
+
+     }
+ }
+function show2(data) {
+	 
+	
+    let tab = 
+        `<tr>
+          <th>Bill Id</th>
+          <th>Bill Amount</th>
+          
+        
+         </tr>`;
+    
+    // Loop to access all rows 
+    for (let r of data) {
+        tab += `<tr> 
+    <td>${r.billId} </td>
+    <td>${r.billAmount}</td>
+    
+    
+    
+</tr>`;
+    document.getElementById("Bills").innerHTML = tab;
+    }
+}
+    </script>
+    <body>
+        <h1>ADMINISTRATOR PAGE</h1>
+        <table id="ClaimRequest"></table>
+        <br>
+        <table id="Firs"></table>
+        <table id="Bills"></table>
+    </body>
+</html>

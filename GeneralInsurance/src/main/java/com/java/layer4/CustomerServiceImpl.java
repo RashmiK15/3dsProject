@@ -16,6 +16,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public Customer viewCustomerService(int customerId) {
+		Customer cust = custDao.getCustomer(customerId);
+		return cust;
+	}
+	
+	
+	@Override
 	public List<Customer> viewAllCustomerService() {
 		List<Customer> custList = custDao.getCustomer();
 		return custList;
@@ -60,16 +67,24 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 	}
 
-	@Override
-	public Customer viewCustomerService(int customerId) {
-		Customer cust = custDao.getCustomer(customerId);
-		return cust;
-	}
 
 	@Override
-	public String removeCustomerService(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+	public String removeCustomerService(int customerId) throws CustomerNotFoundException{
+		List<Customer> listCustomers = custDao.getCustomer();
+		boolean customerFound = false;
+		
+		for(Customer customer : listCustomers) {
+			if(customer.getCustomerId() == customerId) {
+				customerFound = true;
+				break;
+			}
+		}
+		if(customerFound == true) {
+			custDao.deleteCustomer(customerId);
+			return "Customer record deleted";
+		}
+		else {
+			throw new CustomerNotFoundException("Coudn't find customer details!");
+		}
 	}
-
 }

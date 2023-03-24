@@ -14,7 +14,7 @@ public class Customer {
 	
 	public Customer() {
 
-		System.out.println("Customer str()..");
+		System.out.println("Customer ctr()..");
 	}
 
 

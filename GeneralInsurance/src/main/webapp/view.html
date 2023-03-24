@@ -1,0 +1,48 @@
+<html>
+<head>
+<script>
+async function getDetailsTable(url){
+		const response = await fetch(url);
+	    var data = await response.json();
+	    console.log(data);
+	    show(data);
+}
+		
+function show(data){
+		let tab=
+			`<tr>
+				<th>ID</th>
+				<th>Full Name</th>
+				<th>Date of birth</th>
+				<th>Address</th>
+				<th>Car Registration Number</th>
+				<th>Policy ID</th>
+				<th>Driving Licence</th>
+			</tr>`;
+			
+			for(let d of data){
+				tab+=`<tr>
+					<td>${d.customerId}</td>
+					<td>${d.customerName}</td>
+					<td>${d.date}</td>
+					<td>${d.address}</td>
+					<td>${d.rcNumber}</td>
+					<td>${d.policyId}</td>
+					<td>${d.drivingLicence}</td>
+					
+				</tr>`;
+				document.getElementById('CustomerList').innerHTML=tab;
+			}
+		}	
+getDetailsTable("http://localhost:8080/GeneralInsurance/ins/customer/viewAll");
+
+	
+</script>
+</head>
+
+
+<body>
+    <h1>List of customers and their details</h1>
+<table id="CustomerList"></table>
+</body>
+</html>

@@ -10,7 +10,7 @@ public interface CustomerService {
 	List<Customer> viewAllCustomerService();
 	String addCustomerService(Customer customer) throws VehicleAlreadyExistsException;
 	String modifyCustomerService(Customer customer) throws CustomerNotFoundException;
-	String removeCustomerService(int customerId);
+	String removeCustomerService(int customerId) throws CustomerNotFoundException;
 
 	// float calculateCurrencyService(String s,String t, float amt) throws
 	// CurrencyNotFoundException,SourceCurrencyNotFoundException,

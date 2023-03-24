@@ -38,11 +38,11 @@ public class CustomerServiceImplTest {
 		
 		CustomerService custService = new CustomerServiceImpl();
 		Customer customerToModify = new Customer();
-		customerToModify.setCustomerId(1003);
+		customerToModify.setCustomerId(1012);
 		customerToModify.setCustomerName("Leann Graham");
 		customerToModify.setDate(Date.valueOf("1990-02-02"));
-		//customerToModify.setRcNumber("452");
-		//customerToModify.setPolicyId(104);
+		customerToModify.setRcNumber("452");
+		customerToModify.setPolicyId(104);
 		customerToModify.setAddress("Kulas Light, Apt. 556, Gwenborough, 92998-3874");
 		
 		String res = custService.modifyCustomerService(customerToModify);

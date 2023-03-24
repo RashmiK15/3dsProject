@@ -1,7 +1,5 @@
 package com.java.layer5;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -15,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.java.layer2.Customer;
 import com.java.layer4.VehicleAlreadyExistsException;
+import com.java.layer4.CustomerNotFoundException;
 import com.java.layer4.CustomerService;
 import com.java.layer4.CustomerServiceImpl;
 
@@ -28,18 +27,32 @@ public class CustomerController {
 	public CustomerController() { System.out.println("Customer Service called...");}
 	
 	
-	// http://ip:port/RestAPI/customer/delete/3
-//	@DELETE @Path("/delete/{cid}")
-//	public String deleteIt(@PathParam("cid") int x) {
-//		boolean found=false;Currency curr=null;
-//		for (Currency currency : currList) {
-//			if(currency.getCurrencyId() == x) {
-//				curr= currency;currList.remove(curr);found=true;break;
-//			}
-//		}
-//		if(found==true) return "Currency deleted";
-//		else return "Currency Not Found :"+x;
-//	}
+	// http://ip:port/GeneralInsurance/ins/customer/delete/3
+	@DELETE @Path("/delete/{cid}")
+	public String deleteIt(@PathParam("cid") int x) {
+		boolean customerFound=false;
+		for (Customer customer : custList) {
+			if(customer.getCustomerId() == x) {
+				customerFound=true;
+				break;
+			}
+		}
+		if(customerFound==true) {
+			try {
+				customerService.removeCustomerService(x);
+			} 
+			catch (CustomerNotFoundException e) {
+				e.printStackTrace();
+			}
+			return "Customer record deleted";
+		}
+			
+		else {
+			return "Customer Not Found :"+x;
+		}
+	}
+	
+	
 	
 	// http://ip:port/GeneralInsurance/ins/customer/add
 	@POST @Path("/add")
@@ -53,6 +66,8 @@ public class CustomerController {
 		}
 	}
 	
+	
+	
 	// http://ip:port/GeneralInsurance/ins/customer/update
 	@PUT @Path("/update")
 	public String modifyIt(Customer custObj) {
@@ -61,12 +76,17 @@ public class CustomerController {
 		for (Customer customer : custList) {
 			if(customer.getCustomerId() == custObj.getCustomerId()) {
 				found=true;
-				custList.remove(customer);
+				//custList.remove(customer);
 				break;
 			}
 		}
 		if(found==true)  { 
-			custList.add(custObj);
+			try {
+				customerService.modifyCustomerService(custObj);
+			} 
+			catch (CustomerNotFoundException e) {
+				e.printStackTrace();
+			}
 			return "Customer modified";
 		}
 		else { 
@@ -74,13 +94,16 @@ public class CustomerController {
 		}
 	}
 	
-					       //PROJECT/web.xml/class/method
+	
+
 	// http://localhost:port/GeneralInsurance/ins/customer/greet
 	@GET
 	@Path("/greet") // action mappings
 	public String welcome() {
 		return "<h1> Welcome to Motor Insurance Services </h1>";
 	}
+	
+	
 	
 	// http://ip:port/GeneralInsurance/ins/customer/viewCustomer/3
 	@GET
@@ -99,6 +122,7 @@ public class CustomerController {
 	
 	
 	
+	// http://ip:port/GeneralInsurance/ins/customer/viewAll
 	@GET
 	@Path("/viewAll")
 	@Produces(MediaType.APPLICATION_JSON)

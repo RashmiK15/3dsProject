@@ -9,12 +9,11 @@ import com.java.layer5.CustomerController;
 public class ControllerTest {
    
 	public ControllerTest() {
-		// TODO Auto-generated constructor stub
-		
-
+		System.out.println("Controller Test ctr()..");
 	}
-	 @Test
-    public void test1() {
+	
+	@Test
+    public void testAdd() {
 		CustomerController c= new CustomerController();
 		
 		Customer c1=new Customer();
@@ -27,5 +26,26 @@ public class ControllerTest {
 		c1.setRcNumber("452");
 		c.addIt(c1);
     }
+	
+	@Test
+    public void testUpdate() {
+		CustomerController c= new CustomerController();
+		
+		Customer c1=new Customer();
+		
+		c1.setCustomerId(1012);
+		c1.setCustomerName("ABCD");
+		c1.setDate(Date.valueOf("1999-8-25"));
+		c1.setAddress("gbvlainb");
+		c1.setDrivingLicence(3556);
+		c1.setPolicyId(104);
+		c1.setRcNumber("452");
+		c.modifyIt(c1);
+    }
 
+	@Test
+    public void testDelete() {
+		CustomerController c= new CustomerController();
+		c.deleteIt(1012);
+    }
 }
